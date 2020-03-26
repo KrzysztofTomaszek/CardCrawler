@@ -1,0 +1,30 @@
+body {
+  background: lightblue;
+}
+
+a:link {
+  color: red;
+}
+
+a:visited {
+  color: green;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: blue;
+}
+
+.wrapper{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	align-content: space-around;;
+	justify-content: center;
+	background: blue;
+	flex-flow: column wrap; 
+	max-width: 940px;
+}
