@@ -1,10 +1,12 @@
 import {Card} from './card';
 import {cardType, moneyType} from './cardType';
 import { Hero } from './hero';
+import { Board } from './board';
 
 export abstract class Money extends Card {
     cardType: cardType = cardType.money;
     abstract moneyType: moneyType; 
+    abstract itemValue: number;
     itemTimer: number = null;
     HP: number = null;
     holdItem: number = null;
@@ -16,7 +18,7 @@ export abstract class Money extends Card {
 
     OnHeroMoveOn(): void 
     {
-        throw new Error("Method not implemented.");
+        Board.SetScore(this.itemValue);
     }	
 
     MoneyChain()
@@ -28,6 +30,7 @@ export abstract class Money extends Card {
     {
         throw new Error("Method not implemented.");
     }
+
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
         return true;

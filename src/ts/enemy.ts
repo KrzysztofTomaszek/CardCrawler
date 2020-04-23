@@ -1,10 +1,13 @@
 import {Card} from './card';
 import {cardType, enemyType} from './cardType';
 import { Hero } from './hero';
+import { Board } from './board';
+import { Coin } from './coin';
 
 export abstract class Enemy extends Card {
     cardType: cardType = cardType.enemy;
     abstract enemyType: enemyType;
+    abstract HP: number;
     itemTimer: number = null;
     itemValue: number = null;
     holdItem: number = null;
@@ -18,9 +21,13 @@ export abstract class Enemy extends Card {
     {
         if(hero.ifHoldItem)
         {
-            //Odbieranie itemowi dur, brak poruszania, resp pieniązka
-
-            return false;
+            if(!hero.SubDurability(this.HP))
+            {
+                //Odbieranie itemowi dur, brak poruszania, resp pieniązka           
+                Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
+                return false;
+            }
+            return true;            
         }
         else
         {

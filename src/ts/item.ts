@@ -9,15 +9,17 @@ export abstract class Item extends Card {
     readonly HP:number = null;
     readonly itemTimer: number = null;
     readonly holdItem: number = null;
+    abstract itemValue: number;
 
     constructor(cardPleaceId:number)
     {
         super(cardPleaceId);
     }
 
-    OnHeroMoveOn(): void {
-        throw new Error("Method not implemented.");
+    OnHeroMoveOn(hero : Hero): void {
+        hero.OnItemGet(this.itemValue);
     }	
+    
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
         return true;

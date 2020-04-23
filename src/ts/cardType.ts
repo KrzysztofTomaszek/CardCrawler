@@ -33,6 +33,6 @@ export enum moneyType {
 	ruby
 }
 
-export const allPlayableCards : String[] = ['Zombie', 'Skeleton']; 
+export const allPlayableCards : String[] = ['Zombie', 'Skeleton', 'Staff', 'Sword', 'Coin']; 
 //export const allPlayableCards : String[] = ['Zombie', 'Sword', 'Staff', 'Spike', 'Skeleton', 'GoodChest', 'Coin', 'BadChest']; 
 

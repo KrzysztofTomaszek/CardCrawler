@@ -9,7 +9,7 @@ export class Hero extends Card {
     readonly itemTimer: number = null;
     readonly itemValue: number = null; 
     cardType: cardType = cardType.hero;
-    holdItem : number;
+    holdItem : number = 0;
     ifHoldItem : boolean = false;
 
     constructor(cardPleaceId:number)
@@ -23,6 +23,7 @@ export class Hero extends Card {
 
     OnItemGet(itemDurability: number): void
     {
+        this.ifHoldItem = true;
         this.holdItem = itemDurability;
         super.DrawHoldItem(this.holdItem);
     }    
@@ -32,8 +33,22 @@ export class Hero extends Card {
         throw new Error("Method not implemented.");
     }
 
-    SubDurability(): void //Dur to life dla przedmiotów
+    SubDurability(durLoose:number): boolean //Dur to life dla przedmiotów zwraca czy postać dostała obrażenia
     {
-        throw new Error("Method not implemented.");
+        if(durLoose<=this.holdItem)
+        {
+            this.holdItem -= durLoose;
+            if(durLoose == 0) this.ifHoldItem = true;    
+            return false;
+        }
+        else
+        {
+            let tmp:number = durLoose - this.holdItem;
+            this.holdItem = 0;
+            this.HP-=tmp;
+            this.ifHoldItem = false;
+            return true;
+        }           
+
     }
 }

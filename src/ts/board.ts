@@ -12,7 +12,8 @@ import {cardType, allPlayableCards} from './cardType';
 
 export class Board {
 	
-	cards: Card[] = [null, null, null, null, null, null, null, null, null];
+	static cards: Card[] = [null, null, null, null, null, null, null, null, null];
+	static score: number = 0;
 	heroPosition:number = 4;
 
 	constructor() {
@@ -23,7 +24,7 @@ export class Board {
 	{		
 		for(let i:number = 0; i < 9; i++)
 		{
-			if(i==this.heroPosition)this.cards[i] = new Hero(i);
+			if(i==this.heroPosition)Board.cards[i] = new Hero(i);
 			else
 			{
 				this.AddCard(i);
@@ -43,30 +44,36 @@ export class Board {
 		switch (randomElement) 
 		{
 			case "Zombie":
-				this.cards[cardPleaceId] = this.CreateInstance(Zombie,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Zombie,cardPleaceId);
 				break;
 			case "Sword":
-				this.cards[cardPleaceId] = this.CreateInstance(Sword,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Sword,cardPleaceId);
 				break;
 			case "Staff":
-				this.cards[cardPleaceId] = this.CreateInstance(Staff,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Staff,cardPleaceId);
 				break;
 			case "Spike":
-				this.cards[cardPleaceId] = this.CreateInstance(Spike,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Spike,cardPleaceId);
 				break;	
 			case "Skeleton":
-				this.cards[cardPleaceId] = this.CreateInstance(Skeleton,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Skeleton,cardPleaceId);
 				break;
 			case "GoodChest":
-				this.cards[cardPleaceId] = this.CreateInstance(GoodChest,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(GoodChest,cardPleaceId);
 				break;
 			case "Coin":
-				this.cards[cardPleaceId] = this.CreateInstance(Coin,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(Coin,cardPleaceId);
 				break;				
 			case "BadChest":
-				this.cards[cardPleaceId] = this.CreateInstance(BadChest,cardPleaceId);
+				Board.cards[cardPleaceId] = this.CreateInstance(BadChest,cardPleaceId);
 				break;						
 		}			
+	}
+
+	static SetScore(addToScore: number): void
+	{
+		Board.score+=addToScore;
+		(document.getElementById('score') as HTMLDivElement).innerHTML = ("<h1>Score: "+ Board.score.toString() +"</h1>");
 	}
 
 	CardClick(idCard:number) : void  //Pamiętaj aby w odpowiednim porzypadku poprawiać pozycję Hero
@@ -75,19 +82,19 @@ export class Board {
 		{
 			//wywoływanie akcji karty
 
-			this.cards[idCard].OnHeroMoveOn(this.cards[this.heroPosition] as unknown as Hero)
-			if(this.cards[this.heroPosition].HP<=0)this.EndGame();
-			else if(this.cards[idCard].IfHeroMoveOnContact(this.cards[this.heroPosition] as unknown as Hero)) this.MoveHeroInBoard(idCard);
+			Board.cards[idCard].OnHeroMoveOn(Board.cards[this.heroPosition] as unknown as Hero)
+			if(Board.cards[this.heroPosition].HP<=0)this.EndGame();
+			else if(Board.cards[idCard].IfHeroMoveOnContact(Board.cards[this.heroPosition] as unknown as Hero)) this.MoveHeroInBoard(idCard);
 
 			//To raczej powinno być w funckji OnHeroMoveOn w podklasach
 			/*
-			if(this.cards[idCard].cardType == cardType.chest || this.cards[idCard].cardType == cardType.trap)
+			if(Board.cards[idCard].cardType == cardType.chest || Board.cards[idCard].cardType == cardType.trap)
 			{
 
 			}
-			else if(this.cards[idCard].cardType == cardType.enemy)
+			else if(Board.cards[idCard].cardType == cardType.enemy)
 			{
-				if((this.cards[this.heroPosition] as Hero ).ifHoldItem)
+				if((Board.cards[this.heroPosition] as Hero ).ifHoldItem)
 				{
 					//Odbieranie itemowi dur, brak poruszania, resap pieniązka
 				}
@@ -139,8 +146,8 @@ export class Board {
 
 	MoveCardInBoard(cardIdToMove:number, destinationId:number):void
 	{
-		this.cards[cardIdToMove].MoveCard(destinationId);
-		this.cards[destinationId]=this.cards[cardIdToMove];		
+		Board.cards[cardIdToMove].MoveCard(destinationId);
+		Board.cards[destinationId]=Board.cards[cardIdToMove];		
 	}
 
 	MoveHeroInBoard(destination:number):void
@@ -233,11 +240,6 @@ export class Board {
 	}
 
 	RemoveCard() : void
-	{
-        throw new Error("Method not implemented.");
-	}
-
-	SetScore() : void
 	{
         throw new Error("Method not implemented.");
 	}

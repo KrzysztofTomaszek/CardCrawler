@@ -69,6 +69,7 @@ export abstract class Card {
 
     DrawHoldItem(value:number = null): void
     {
+
         this.DrawNumberInClass("cardBottom", "holdItem", value); 
     }
 
@@ -76,5 +77,6 @@ export abstract class Card {
     {
         var targetDiv = document.getElementById("card" + this.cardPleaceId.toString()).getElementsByClassName(classCSS)[0].getElementsByClassName(childClassCSS)[0];
         if(value!=null)targetDiv.innerHTML = (value).toString(); 
+        else targetDiv.innerHTML = " ";
     }
 }
