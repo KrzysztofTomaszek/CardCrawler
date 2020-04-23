@@ -17,29 +17,27 @@ export abstract class Enemy extends Card {
         super(cardPleaceId);
     }
 
-    OnHeroMoveOn(hero : Hero): boolean 
+    OnHeroMoveOn(hero : Hero): void 
     {
         if(hero.ifHoldItem)
         {
-            if(!hero.SubDurability(this.HP))
-            {
-                //Odbieranie itemowi dur, brak poruszania, resp pieniązka           
-                Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
-                return false;
-            }
-            return true;            
+            //Odbieranie itemowi dur, brak poruszania, resp pieniązka   
+            hero.SubDurability(this.HP); 
         }
         else
         {
             //Odjęcie życia, paruszanie, brak pieniązka
             hero.HP = hero.HP - this.HP;
-            return true;
         }
     }	
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
-        if(hero.ifHoldItem) return false;
+        if(hero.ifHoldItem)
+        {
+            Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
+            return false;
+        }         
         else return true;        
     }    
    

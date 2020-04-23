@@ -38,7 +38,8 @@ export class Hero extends Card {
         if(durLoose<=this.holdItem)
         {
             this.holdItem -= durLoose;
-            if(durLoose == 0) this.ifHoldItem = false;    
+            if(durLoose == 0) this.ifHoldItem = false;
+            super.DrawHoldItem(this.holdItem);    
             return false;
         }
         else
@@ -47,6 +48,7 @@ export class Hero extends Card {
             this.holdItem = 0;
             this.HP-=tmp;
             this.ifHoldItem = false;
+            super.DrawHoldItem(this.holdItem);
             return true;
         }           
 

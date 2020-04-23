@@ -82,10 +82,10 @@ export class Board {
 		{
 			//wywoływanie akcji karty
 
-			Board.cards[idCard].OnHeroMoveOn(Board.cards[this.heroPosition] as unknown as Hero)
+			Board.cards[idCard].OnHeroMoveOn(Board.cards[this.heroPosition] as unknown as Hero);
 			if(Board.cards[this.heroPosition].HP<=0)this.EndGame();
-			else if(Board.cards[idCard].IfHeroMoveOnContact(Board.cards[this.heroPosition] as unknown as Hero)) this.MoveHeroInBoard(idCard);
-
+			else if(Board.cards[idCard].IfHeroMoveOnContact(Board.cards[this.heroPosition] as unknown as Hero))this.MoveHeroInBoard(idCard);		
+			
 			//To raczej powinno być w funckji OnHeroMoveOn w podklasach
 			/*
 			if(Board.cards[idCard].cardType == cardType.chest || Board.cards[idCard].cardType == cardType.trap)
