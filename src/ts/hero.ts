@@ -38,7 +38,7 @@ export class Hero extends Card {
         if(durLoose<=this.holdItem)
         {
             this.holdItem -= durLoose;
-            if(durLoose == 0) this.ifHoldItem = true;    
+            if(durLoose == 0) this.ifHoldItem = false;    
             return false;
         }
         else
