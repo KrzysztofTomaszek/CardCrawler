@@ -15,6 +15,8 @@ export class Board {
 	static cards: Card[] = [null, null, null, null, null, null, null, null, null];
 	static score: number = 0;
 	heroPosition:number = 4;
+	hero: Hero;
+	
 
 	constructor() {
 		this.CreateBoard();
@@ -27,45 +29,51 @@ export class Board {
 			if(i==this.heroPosition)Board.cards[i] = new Hero(i);
 			else
 			{
-				this.AddCard(i);
+				Board.AddCard(i,allPlayableCards);
 			}
 		}
+		//Cookies.set('Score', '10');
+		
+		if(localStorage.getItem('Score') == null) localStorage.setItem('Score', '0');
+		Board.SetScore(parseInt(localStorage.getItem('Score')));
+		alert(localStorage.getItem('Board'));
+		//if(localStorage.getItem('Board') != null) Board.cards = JSON.parse(localStorage.getItem('Board'))
 	}
 
-	CreateInstance<T extends Card>(c: new (cardPleaceId:number) => T, pleaceId:number): T 
+	static CreateInstance<T extends Card>(c: new (cardPleaceId:number) => T, pleaceId:number): T 
 	{
     	return new c(pleaceId);
 	}
 
-	AddCard(cardPleaceId:number) : void
+	static AddCard(cardPleaceId:number, cardPool: string[]) : void
 	{
-		const randomElement: String  = allPlayableCards[Math.floor(Math.random() * allPlayableCards.length)];	
+		const randomElement: string  = cardPool[Math.floor(Math.random() * allPlayableCards.length)];	
 					
 		switch (randomElement) 
 		{
 			case "Zombie":
-				Board.cards[cardPleaceId] = this.CreateInstance(Zombie,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Zombie,cardPleaceId);
 				break;
 			case "Sword":
-				Board.cards[cardPleaceId] = this.CreateInstance(Sword,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Sword,cardPleaceId);
 				break;
 			case "Staff":
-				Board.cards[cardPleaceId] = this.CreateInstance(Staff,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Staff,cardPleaceId);
 				break;
 			case "Spike":
-				Board.cards[cardPleaceId] = this.CreateInstance(Spike,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Spike,cardPleaceId);
 				break;	
 			case "Skeleton":
-				Board.cards[cardPleaceId] = this.CreateInstance(Skeleton,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Skeleton,cardPleaceId);
 				break;
 			case "GoodChest":
-				Board.cards[cardPleaceId] = this.CreateInstance(GoodChest,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(GoodChest,cardPleaceId);
 				break;
 			case "Coin":
-				Board.cards[cardPleaceId] = this.CreateInstance(Coin,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(Coin,cardPleaceId);
 				break;				
 			case "BadChest":
-				Board.cards[cardPleaceId] = this.CreateInstance(BadChest,cardPleaceId);
+				Board.cards[cardPleaceId] = Board.CreateInstance(BadChest,cardPleaceId);
 				break;						
 		}			
 	}
@@ -74,44 +82,20 @@ export class Board {
 	{
 		Board.score+=addToScore;
 		(document.getElementById('score') as HTMLDivElement).innerHTML = ("<h1>Score: "+ Board.score.toString() +"</h1>");
+		localStorage.setItem('Score', Board.score.toString());
 	}
 
-	CardClick(idCard:number) : void  //Pamiętaj aby w odpowiednim porzypadku poprawiać pozycję Hero
+	CardClick(idCard:number) : void 
 	{
 		if(this.IfHeroIsNeighbour(idCard))
 		{
 			//wywoływanie akcji karty
-
-			Board.cards[idCard].OnHeroMoveOn(Board.cards[this.heroPosition] as unknown as Hero);
+			this.hero = Board.cards[this.heroPosition] as unknown as Hero;
+			Board.cards[idCard].OnHeroMoveOn(this.hero);
 			if(Board.cards[this.heroPosition].HP<=0)this.EndGame();
-			else if(Board.cards[idCard].IfHeroMoveOnContact(Board.cards[this.heroPosition] as unknown as Hero))this.MoveHeroInBoard(idCard);		
-			
-			//To raczej powinno być w funckji OnHeroMoveOn w podklasach
-			/*
-			if(Board.cards[idCard].cardType == cardType.chest || Board.cards[idCard].cardType == cardType.trap)
-			{
+			else if(Board.cards[idCard].IfHeroMoveOnContact(this.hero))this.MoveHeroInBoard(idCard);	
 
-			}
-			else if(Board.cards[idCard].cardType == cardType.enemy)
-			{
-				if((Board.cards[this.heroPosition] as Hero ).ifHoldItem)
-				{
-					//Odbieranie itemowi dur, brak poruszania, resap pieniązka
-				}
-				else
-				{
-					//Odjęcie życia, paruszanie, brak pieniązka
-					
-					//TEST Poruszania
-					this.MoveHeroInBoard(idCard);
-					//
-				}
-			}
-			else
-			{
-				
-			}
-			*/
+			localStorage.setItem('Board', JSON.stringify(Board.cards));
 		}
 	}
 
@@ -187,7 +171,7 @@ export class Board {
 		}
 		this.MoveCardInBoard(cardToMove+switcher,cardToMove);	
 		this.MoveCardInBoard(cardToMove+switcher+switcher,cardToMove+switcher);	
-		this.AddCard(cardToMove+switcher+switcher);
+		Board.AddCard(cardToMove+switcher+switcher,allPlayableCards);
 	}
 
 	MoveCardSmallL(cardToMove:number, destinationId:number = 4) : void
@@ -212,7 +196,7 @@ export class Board {
 				throw new Error("Method not implemented.");
 		}
 		this.MoveCardInBoard(scecondCard,cardToMove);
-		this.AddCard(scecondCard);
+		Board.AddCard(scecondCard,allPlayableCards);
 	}	
 
 	MoveCardReversePauseSign(cardToMove:number, destination:number) : void
@@ -228,7 +212,7 @@ export class Board {
 			this.MoveCardInBoard(cardToMove - 3,cardToMove);
 			cardToMove = cardToMove - 3;
 		}
-		this.AddCard(cardToMove);
+		Board.AddCard(cardToMove,allPlayableCards);
 	}
 
 	MoveCardPauseSign(cardToMove:number, destination:number) : void
@@ -236,7 +220,19 @@ export class Board {
 		this.MoveCardInBoard(cardToMove,destination);
 		if((cardToMove - destination) > 0)this.MoveCardInBoard(++cardToMove,cardToMove - 1);
 		else if((cardToMove - destination) < 0)this.MoveCardInBoard(--cardToMove,cardToMove + 1);
-		this.AddCard(cardToMove);
+		Board.AddCard(cardToMove,allPlayableCards);
+	}
+
+	SellItem() : void
+	{
+		Board.SetScore(this.hero.holdItemValue);
+		Board.SetItemValue(0);
+		this.hero.SellItem();
+	}
+
+	static SetItemValue(value: number): void
+	{
+		(document.getElementById('itemValue') as HTMLDivElement).innerHTML = ("<h1>Hold item value: "+ value.toString() +"</h1>");
 	}
 
 	RemoveCard() : void
@@ -248,5 +244,6 @@ export class Board {
 	{
 		//Zapisywanie postępów
 		window.location.href = "index.html";
+		localStorage.removeItem('Board');
 	}
 }

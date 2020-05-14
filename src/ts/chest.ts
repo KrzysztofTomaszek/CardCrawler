@@ -1,6 +1,7 @@
 import {Card} from './card';
 import {cardType, chestType} from './cardType';
 import { Hero } from './hero';
+import { Board } from './board';
 
 export abstract class Chest extends Card {
     cardType: cardType= cardType.chest;
@@ -18,11 +19,12 @@ export abstract class Chest extends Card {
 
     OnHeroMoveOn(): void 
     {
-        throw new Error("Method not implemented.");
+
     }	
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
+        Board.AddCard(this.cardPleaceId,this.itemPool);
         return false;
     }
     

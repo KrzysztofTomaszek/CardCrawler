@@ -4,8 +4,8 @@ import {cardType, chestType} from './cardType';
 
 export class GoodChest extends Chest {
     chestType: chestType.goodChest;
-    itemPool: string[] = ["Coin", "Sword"];
-    avatarURL: string = "./img/avatars/chest.png";
+    itemPool: string[] = ["Coin", "Sword", "Staff"];
+    avatarURL: string = "./img/avatars/goodChest.png";
     name: string = "Chest"
 
     constructor(cardPleaceId:number)

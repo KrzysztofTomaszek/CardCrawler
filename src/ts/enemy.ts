@@ -11,6 +11,7 @@ export abstract class Enemy extends Card {
     itemTimer: number = null;
     itemValue: number = null;
     holdItem: number = null;
+    ifDead: boolean = false;
 
     constructor(cardPleaceId:number)
     {
@@ -19,31 +20,23 @@ export abstract class Enemy extends Card {
 
     OnHeroMoveOn(hero : Hero): void 
     {
-        if(hero.ifHoldItem)
-        {
-            //Odbieranie itemowi dur, brak poruszania, resp pieniązka   
-            hero.SubDurability(this.HP); 
-        }
-        else
-        {
-            //Odjęcie życia, paruszanie, brak pieniązka
-            hero.HP = hero.HP - this.HP;
-        }
+        hero.Fight(this); 
     }	
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
-        if(hero.ifHoldItem)
-        {
-            Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
+        if(hero.ifInLastPhaseHaveItem)
+        { 
+            if(this.ifDead)Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
             return false;
         }         
         else return true;        
     }    
    
-    DealDamage(): void
+    TakeDamage(value :  number): void
     {
-        throw new Error("Method not implemented.");
+        this.HP-=value;
+        super.DrawHP(this.HP);
     }
 
     SubHP(): void

@@ -12,3 +12,4 @@ document.getElementById("card5").addEventListener("click", function(){board.Card
 document.getElementById("card6").addEventListener("click", function(){board.CardClick(6);});
 document.getElementById("card7").addEventListener("click", function(){board.CardClick(7);});
 document.getElementById("card8").addEventListener("click", function(){board.CardClick(8);});
+document.getElementById("sellItem").addEventListener("click", function(){board.SellItem();});

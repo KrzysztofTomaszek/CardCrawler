@@ -17,12 +17,14 @@ export abstract class Item extends Card {
     }
 
     OnHeroMoveOn(hero : Hero): void {
-        hero.OnItemGet(this.itemValue);
+        hero.OnItemGet(this.itemValue, this.monetaryValue);
     }	
     
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
         return true;
     }
+
+
 
 }

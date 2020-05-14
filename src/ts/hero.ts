@@ -1,5 +1,7 @@
 import {Card} from './card';
 import {cardType} from './cardType';
+import { Enemy } from './enemy';
+import { Board } from './board';
 
 export class Hero extends Card {
     name: string = "Knight";
@@ -11,6 +13,8 @@ export class Hero extends Card {
     cardType: cardType = cardType.hero;
     holdItem : number = 0;
     ifHoldItem : boolean = false;
+    holdItemValue : number;
+    ifInLastPhaseHaveItem: boolean = false;
 
     constructor(cardPleaceId:number)
     {
@@ -21,10 +25,12 @@ export class Hero extends Card {
     OnHeroMoveOn(hero : Hero): void {}	
     IfHeroMoveOnContact(hero : Hero) : boolean {return false;}
 
-    OnItemGet(itemDurability: number): void
+    OnItemGet(itemDurability: number, itemValue: number): void
     {
         this.ifHoldItem = true;
         this.holdItem = itemDurability;
+        this.SetItemValue(itemValue);
+        Board.SetItemValue(itemValue);
         super.DrawHoldItem(this.holdItem);
     }    
     
@@ -33,24 +39,41 @@ export class Hero extends Card {
         throw new Error("Method not implemented.");
     }
 
-    SubDurability(durLoose:number): boolean //Dur to life dla przedmiotów zwraca czy postać dostała obrażenia
+    SetItemValue(value: number) : void
     {
-        if(durLoose<=this.holdItem)
+        this.holdItemValue = value;
+    }
+
+    Fight(enemy: Enemy): void 
+    {
+        this.ifInLastPhaseHaveItem = false;
+        if(this.ifHoldItem)
         {
-            this.holdItem -= durLoose;
-            if(durLoose == 0) this.ifHoldItem = false;
-            super.DrawHoldItem(this.holdItem);    
-            return false;
+            this.ifInLastPhaseHaveItem = true;
+            let tmp:number;
+            tmp = this.holdItem - enemy.HP;
+            enemy.TakeDamage(this.holdItem);
+            this.holdItem = tmp;
+            if(enemy.HP<=0)enemy.ifDead=true;
+            if(this.holdItem <= 0) 
+            {
+                this.holdItem=0;
+                this.ifHoldItem = false;
+                this.SetItemValue(0);
+            }            
+            super.DrawHoldItem(this.holdItem);   
         }
         else
         {
-            let tmp:number = durLoose - this.holdItem;
-            this.holdItem = 0;
-            this.HP-=tmp;
-            this.ifHoldItem = false;
-            super.DrawHoldItem(this.holdItem);
-            return true;
-        }           
+            this.HP-=enemy.HP;
+        }               
+    }    
 
+    SellItem(): void
+    {
+        this.SetItemValue(0);
+        this.holdItem = 0;
+        this.ifHoldItem = false;
+        super.DrawHoldItem(this.holdItem);
     }
 }
