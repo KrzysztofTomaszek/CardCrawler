@@ -17,30 +17,12 @@ export abstract class Chest extends Card {
         super(cardPleaceId); 
     }
 
-    OnHeroMoveOn(): void 
-    {
-
-    }	
+    OnHeroMoveOn(): void {}	
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
-        Board.AddCard(this.cardPleaceId,this.itemPool);
+        Board.AddCard(this.cardPleaceId,this.itemPool);	
         return false;
-    }
-    
-    OpenChest()
-    {
-        throw new Error("Method not implemented.");
-    }
-
-    RandomItem()
-    {
-        throw new Error("Method not implemented.");
-    }
-
-    CreateItem()
-    {
-        throw new Error("Method not implemented.");
     }
      
 }

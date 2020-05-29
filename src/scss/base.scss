@@ -1,0 +1,34 @@
+@import 'vars';
+
+body {
+    background: $primary-color;
+}
+
+a:link {
+    color: $link-color;
+}
+  
+a:visited {
+    color: $link-color;
+}
+  
+a:hover {
+    color: $link-hover-color;
+}
+  
+a:active {
+    color: $link-active-color;
+}
+
+.wrapper{
+	font: 100% $main-font;
+	color: $primary-font-color;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	align-content: space-around;;
+	justify-content: center;
+	background: $wraper-color;
+	flex-flow: column wrap; 
+	max-width: $max-wrapper-width;
+}

@@ -4,28 +4,32 @@ export enum cardType {
   item,
   trap,
   chest,
-  money
+  money,
+  potion
 }
 
 export enum enemyType {
   zombie,
-  skeleton
+  skeleton,
+  ork,
+  werewolf
 }
 
 export enum itemType {
 	sword,
 	staf,
-	dagger
+	dagger,
+	lightSword
 }
 
 export enum trapType {
-	spike,
-	bomb
+	spike
 }
 
 export enum chestType {
 	goodChest,
-	badChest
+	badChest,
+	chaosChest
 }
 
 export enum moneyType {
@@ -33,6 +37,12 @@ export enum moneyType {
 	ruby
 }
 
-export const allPlayableCards : string[] = ['Zombie', 'Skeleton', 'Staff', 'Sword', 'GoodChest', 'Coin', 'BadChest']; 
-//export const allPlayableCards : String[] = ['Zombie', 'Sword', 'Staff', 'Spike', 'Skeleton', 'GoodChest', 'Coin', 'BadChest']; 
+export enum potionType {
+	heal,
+	bigHeal,
+	doom,
+	risk
+}
+
+export const allPlayableCards : string[] = ['Zombie', 'Skeleton', 'Staff', 'Sword', 'GoodChest', 'BadChest','HealPotion','DoomPotion','Spike','ChaosChest','Ork','Dagger']; 
 

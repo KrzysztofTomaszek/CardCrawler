@@ -19,21 +19,10 @@ export abstract class Money extends Card {
     OnHeroMoveOn(): void 
     {
         Board.SetScore(this.itemValue);
-    }	
-
-    MoneyChain()
-    {
-        throw new Error("Method not implemented.");
-    }
-    
-    AddToPurse()
-    {
-        throw new Error("Method not implemented.");
-    }
+    }      
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
     {
         return true;
     }
-
 }

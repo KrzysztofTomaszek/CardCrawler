@@ -1,10 +1,9 @@
-import {Card} from './card';
 import {Chest} from './chest';
-import {cardType, chestType} from './cardType';
+import {chestType} from './cardType';
 
 export class GoodChest extends Chest {
     chestType: chestType.goodChest;
-    itemPool: string[] = ["Coin", "Sword", "Staff"];
+    itemPool: string[] = ["Coin", "Sword", "Staff", "Ruby","HealPotion","BigHealPotion","Dagger"];
     avatarURL: string = "./img/avatars/goodChest.png";
     name: string = "Chest"
 

@@ -1,0 +1,24 @@
+@import 'base';
+@import 'vars';
+@import 'card';
+
+.shop {
+  width: 940px;
+  margin: 0 auto;
+  padding: 30px;
+  background: $shop-background;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.BoughtHero {
+}
+
+.HeroForBuy {
+  background: $hero-for-buy-background-color;
+}
+
+.ActiveHero {
+  background: $active-hero-background-color;
+}

@@ -1,6 +1,5 @@
-import {Card} from './card';
 import {Enemy} from './enemy';
-import {cardType, enemyType} from './cardType';
+import {enemyType} from './cardType';
 
 export class Zombie extends Enemy {
     name: string = "Zombie"; 

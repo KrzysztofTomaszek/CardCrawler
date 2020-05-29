@@ -3,23 +3,21 @@ import {cardType} from './cardType';
 import { Enemy } from './enemy';
 import { Board } from './board';
 
-export class Hero extends Card {
-    name: string = "Knight";
-    avatarURL: string = "./img/avatars/knight.png";
-    HP: number = 10;
-    readonly maxHP:number = this.HP;
-    readonly itemTimer: number = null;
-    readonly itemValue: number = null; 
+export abstract class Hero extends Card {
+    abstract HP: number;
+    abstract maxHP:number;
+    avatarURL: string;
+    abstract itemTimer: number;
+    abstract itemValue: number; 
     cardType: cardType = cardType.hero;
-    holdItem : number = 0;
-    ifHoldItem : boolean = false;
-    holdItemValue : number;
-    ifInLastPhaseHaveItem: boolean = false;
+    abstract holdItem : number;
+    abstract ifHoldItem : boolean;
+    abstract holdItemValue : number;
+    abstract ifInLastPhaseHaveItem: boolean = false;
 
     constructor(cardPleaceId:number)
     {
-        super(cardPleaceId);
-        super.Initialize(this); 
+        super(cardPleaceId);        
     }
 
     OnHeroMoveOn(hero : Hero): void {}	

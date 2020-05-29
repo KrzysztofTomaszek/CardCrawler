@@ -1,43 +1,82 @@
+import {storageHeroName,storageScoreName,storageBoardName,HeroKnightName,HeroMegaKnightName} from './globals';
 import {Card} from './card';
 import {Hero} from './hero';
 import {Zombie} from './zombie';
 import {Sword} from './sword';
 import {Staff} from './staff';
-import {Spike} from './spike';
+import {Ruby} from './ruby';
 import {Skeleton} from './skeleton';
 import {GoodChest} from './goodChest';
 import {Coin} from './coin';
+import {Trap} from './trap';
+import {Knight} from './knight';
+import {MegaKnight} from './megaKnight';
 import {BadChest} from './badChest';
-import {cardType, allPlayableCards} from './cardType';
+import {HealPotion} from './healPotion';
+import {BigHealPotion} from './bigHealPotion';
+import {RiskPotion} from './riskPotion';
+import {DoomPotion} from './doomPotion';
+import {Spike} from './spike';
+import {ChaosChest} from './chaosChest';
+import {Dagger} from './dagger';
+import {LightSword} from './lightSword';
+import {Ork} from './ork';
+import {Werewolf} from './werewolf';
+import {allPlayableCards, cardType} from './cardType';
 
 export class Board {
 	
 	static cards: Card[] = [null, null, null, null, null, null, null, null, null];
 	static score: number = 0;
+	static soundtrack : HTMLAudioElement;
+	static soundtrackActive:boolean=false;
 	heroPosition:number = 4;
 	hero: Hero;
 	
-
-	constructor() {
-		this.CreateBoard();
+	
+	constructor() {		
+		this.CreateBoard();		
+		this.LoadSoundtrack();
 	}
+
+	LoadSoundtrack() : void
+	{
+		Board.soundtrack = new Audio();
+		Board.soundtrack.src = "./audio/mainTheme.mp3";
+		Board.soundtrack.load();		
+		document.getElementById("ChangeSoundtrack").addEventListener("click", function(){Board.ChangeSoundtrack();;});
+	}
+
+	static ChangeSoundtrack() : void
+	{
+		if(Board.soundtrackActive)
+		{
+			this.soundtrack.pause();
+			document.getElementById("ChangeSoundtrack").innerText="Play Soundtrack";
+		}
+		else
+		{
+			this.soundtrack.play();
+			document.getElementById("ChangeSoundtrack").innerText="Pause Soundtrack";
+		}
+		Board.soundtrackActive=!Board.soundtrackActive;
+	}
+		
 
 	CreateBoard() : void
 	{		
+		if(localStorage.getItem(storageHeroName) == null) localStorage.setItem(storageHeroName, HeroKnightName);
 		for(let i:number = 0; i < 9; i++)
 		{
-			if(i==this.heroPosition)Board.cards[i] = new Hero(i);
+			if(i==this.heroPosition) Board.SelectHero(i);
 			else
 			{
 				Board.AddCard(i,allPlayableCards);
 			}
 		}
-		//Cookies.set('Score', '10');
-		
-		if(localStorage.getItem('Score') == null) localStorage.setItem('Score', '0');
-		Board.SetScore(parseInt(localStorage.getItem('Score')));
-		alert(localStorage.getItem('Board'));
-		//if(localStorage.getItem('Board') != null) Board.cards = JSON.parse(localStorage.getItem('Board'))
+		if(localStorage.getItem(storageScoreName) == null) localStorage.setItem(storageScoreName, '0');
+		Board.SetScore(parseInt(localStorage.getItem(storageScoreName)));
+		//if(localStorage.getItem(storageBoardName) != null) Board.cards = JSON.parse(localStorage.getItem(storageBoardName))
 	}
 
 	static CreateInstance<T extends Card>(c: new (cardPleaceId:number) => T, pleaceId:number): T 
@@ -47,7 +86,7 @@ export class Board {
 
 	static AddCard(cardPleaceId:number, cardPool: string[]) : void
 	{
-		const randomElement: string  = cardPool[Math.floor(Math.random() * allPlayableCards.length)];	
+		const randomElement: string  = cardPool[Math.floor(Math.random() * cardPool.length)];	
 					
 		switch (randomElement) 
 		{
@@ -60,43 +99,128 @@ export class Board {
 			case "Staff":
 				Board.cards[cardPleaceId] = Board.CreateInstance(Staff,cardPleaceId);
 				break;
-			case "Spike":
-				Board.cards[cardPleaceId] = Board.CreateInstance(Spike,cardPleaceId);
-				break;	
 			case "Skeleton":
 				Board.cards[cardPleaceId] = Board.CreateInstance(Skeleton,cardPleaceId);
 				break;
 			case "GoodChest":
 				Board.cards[cardPleaceId] = Board.CreateInstance(GoodChest,cardPleaceId);
 				break;
-			case "Coin":
-				Board.cards[cardPleaceId] = Board.CreateInstance(Coin,cardPleaceId);
-				break;				
 			case "BadChest":
 				Board.cards[cardPleaceId] = Board.CreateInstance(BadChest,cardPleaceId);
-				break;						
+				break;		
+			case "Coin":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Coin,cardPleaceId);
+				break;
+			case "Ruby":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Ruby,cardPleaceId);
+				break;	
+			case "HealPotion":
+				Board.cards[cardPleaceId] = Board.CreateInstance(HealPotion,cardPleaceId);
+				break;	
+			case "BigHealPotion":
+				Board.cards[cardPleaceId] = Board.CreateInstance(BigHealPotion,cardPleaceId);
+				break;	
+			case "DoomPotion":
+				Board.cards[cardPleaceId] = Board.CreateInstance(DoomPotion,cardPleaceId);
+				break;	
+			case "RiskPotion":
+				Board.cards[cardPleaceId] = Board.CreateInstance(RiskPotion,cardPleaceId);
+				break;		
+			case "Spike":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Spike,cardPleaceId);
+				break;	
+			case "ChaosChest":
+				Board.cards[cardPleaceId] = Board.CreateInstance(ChaosChest,cardPleaceId);
+				break;
+			case "Werewolf":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Werewolf,cardPleaceId);
+				break;
+			case "Ork":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Ork,cardPleaceId);
+				break;
+			case "Dagger":
+				Board.cards[cardPleaceId] = Board.CreateInstance(Dagger,cardPleaceId);
+				break;
+			case "LightSword":
+				Board.cards[cardPleaceId] = Board.CreateInstance(LightSword,cardPleaceId);
+				break;		
 		}			
+	}
+
+	static SelectHero(heroPlace : number) : void
+	{
+		switch (localStorage.getItem(storageHeroName)) 
+		{
+			case HeroKnightName:
+				Board.cards[heroPlace] = Board.CreateInstance(Knight,heroPlace);
+				break;
+			case HeroMegaKnightName:
+				Board.cards[heroPlace] = Board.CreateInstance(MegaKnight,heroPlace);
+				break;
+		}
+		
 	}
 
 	static SetScore(addToScore: number): void
 	{
 		Board.score+=addToScore;
-		(document.getElementById('score') as HTMLDivElement).innerHTML = ("<h1>Score: "+ Board.score.toString() +"</h1>");
-		localStorage.setItem('Score', Board.score.toString());
+		(document.getElementById('score') as HTMLDivElement).innerHTML = ("<h1>Gold: "+ Board.score.toString() +"</h1>");
+		localStorage.setItem(storageScoreName, Board.score.toString());
 	}
 
 	CardClick(idCard:number) : void 
 	{
 		if(this.IfHeroIsNeighbour(idCard))
 		{
-			//wywoływanie akcji karty
 			this.hero = Board.cards[this.heroPosition] as unknown as Hero;
 			Board.cards[idCard].OnHeroMoveOn(this.hero);
 			if(Board.cards[this.heroPosition].HP<=0)this.EndGame();
-			else if(Board.cards[idCard].IfHeroMoveOnContact(this.hero))this.MoveHeroInBoard(idCard);	
-
-			localStorage.setItem('Board', JSON.stringify(Board.cards));
+			else if(Board.cards[idCard].IfHeroMoveOnContact(this.hero))
+			{
+				this.StartMoneyChainCheckingSystem();
+				this.MoveHeroInBoard(idCard);	
+				this.StartTrapsActivation();
+				this.StartMoneyChainCheckingSystem();
+			}
+			localStorage.setItem(storageBoardName, JSON.stringify(Board.cards));
 		}
+	}
+
+	StartMoneyChainCheckingSystem() : void
+	{
+		if(Board.IfCardOnBoard("Coin"))
+		{
+			let moneyArr:number[] = Coin.IfMoneyChain();
+			if(moneyArr[2]!=null)Coin.MoneyChain(moneyArr);
+		}
+	}
+
+	StartTrapsActivation() : void
+	{
+		if(Board.IfTypeOnBoard(cardType.trap))
+		{
+			Trap.ChangeAllActivableTrapStatus();
+		}
+	}
+
+	static IfCardOnBoard(cardName: string) : boolean
+	{
+		let flag:boolean=false;
+		Board.cards.forEach(card => {			
+			if(card.name == cardName){flag=true;}
+		});
+		if(flag)return true;
+		else return false;
+	}
+
+	static IfTypeOnBoard(cardType: cardType) : boolean
+	{
+		let flag:boolean=false;
+		Board.cards.forEach(card => {			
+			if(card.cardType == cardType){flag=true;}
+		});
+		if(flag)return true;
+		else return false;
 	}
 
 	IfHeroIsNeighbour(idCard:number) : boolean
@@ -143,7 +267,7 @@ export class Board {
 		else if((this.heroPosition == 6 && destination == 7)||(this.heroPosition == 8 && destination == 7))this.MoveCardBigL(this.heroPosition, destination, 2);
 		else if((this.heroPosition == 0 && destination == 3)||(this.heroPosition == 6 && destination == 3))this.MoveCardBigL(this.heroPosition, destination, 3);
 		else if((this.heroPosition == 2 && destination == 5)||(this.heroPosition == 8 && destination == 5))this.MoveCardBigL(this.heroPosition, destination, 4);
-		else throw new Error("Method not implemented.");		
+		else throw new Error("Wrong arguments");		
 
         this.heroPosition=destination;
 	}
@@ -167,7 +291,7 @@ export class Board {
 				switcher=-1;				
 				break;		
 			default:
-				throw new Error("Method not implemented.");
+				throw new Error("Wrong arguments");
 		}
 		this.MoveCardInBoard(cardToMove+switcher,cardToMove);	
 		this.MoveCardInBoard(cardToMove+switcher+switcher,cardToMove+switcher);	
@@ -193,7 +317,7 @@ export class Board {
 				scecondCard = 8;				
 				break;		
 			default:
-				throw new Error("Method not implemented.");
+				throw new Error("Wrong arguments");
 		}
 		this.MoveCardInBoard(scecondCard,cardToMove);
 		Board.AddCard(scecondCard,allPlayableCards);
@@ -226,7 +350,7 @@ export class Board {
 	SellItem() : void
 	{
 		Board.SetScore(this.hero.holdItemValue);
-		Board.SetItemValue(0);
+		Board.SetItemValue(0);		
 		this.hero.SellItem();
 	}
 
@@ -235,15 +359,9 @@ export class Board {
 		(document.getElementById('itemValue') as HTMLDivElement).innerHTML = ("<h1>Hold item value: "+ value.toString() +"</h1>");
 	}
 
-	RemoveCard() : void
-	{
-        throw new Error("Method not implemented.");
-	}
-
 	EndGame() : void
 	{
-		//Zapisywanie postępów
 		window.location.href = "index.html";
-		localStorage.removeItem('Board');
+		localStorage.removeItem(storageBoardName);
 	}
 }

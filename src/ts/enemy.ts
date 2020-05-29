@@ -2,12 +2,12 @@ import {Card} from './card';
 import {cardType, enemyType} from './cardType';
 import { Hero } from './hero';
 import { Board } from './board';
-import { Coin } from './coin';
 
 export abstract class Enemy extends Card {
     cardType: cardType = cardType.enemy;
     abstract enemyType: enemyType;
     abstract HP: number;
+    drop: string = "Coin";
     itemTimer: number = null;
     itemValue: number = null;
     holdItem: number = null;
@@ -27,7 +27,7 @@ export abstract class Enemy extends Card {
     {
         if(hero.ifInLastPhaseHaveItem)
         { 
-            if(this.ifDead)Board.cards[this.cardPleaceId] = new Coin(this.cardPleaceId);
+            if(this.ifDead)Board.AddCard(this.cardPleaceId,[this.drop]);	 
             return false;
         }         
         else return true;        
@@ -37,10 +37,5 @@ export abstract class Enemy extends Card {
     {
         this.HP-=value;
         super.DrawHP(this.HP);
-    }
-
-    SubHP(): void
-    {
-        throw new Error("Method not implemented.");
     }
 }

@@ -5,7 +5,8 @@ module.exports = {
   mode: "development",
   entry: {
     index:'./src/ts/index.ts',
-    game:'./src/ts/game.ts'
+    game:'./src/ts/game.ts',
+    heroes:'./src/ts/heroes.ts'
   },  
   output: {
     filename: "[name].js",

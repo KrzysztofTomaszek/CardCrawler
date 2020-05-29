@@ -1,10 +1,9 @@
-import {Card} from './card';
 import {Chest} from './chest';
-import {cardType, chestType} from './cardType';
+import {chestType} from './cardType';
 
 export  class BadChest extends Chest {
     chestType: chestType.badChest;
-    itemPool: string[] = ["Zombie","Skeleton"];
+    itemPool: string[] = ["Zombie","Skeleton","DoomPotion","RiskPotion","Ork"];
     avatarURL: string = "./img/avatars/badChest.png";
     name: string = "Dark Chest";
 

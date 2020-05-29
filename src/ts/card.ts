@@ -31,11 +31,6 @@ export abstract class Card {
         this.Initialize(this);
     }
 
-    SwapCard() : void
-    {
-        throw new Error("Method not implemented.");
-    }
-
     abstract IfHeroMoveOnContact(hero : Hero) : boolean;
 
     abstract OnHeroMoveOn(hero : Hero) : void; 

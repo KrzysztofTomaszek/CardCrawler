@@ -1,6 +1,5 @@
-import {Card} from './card';
 import {Item} from './item';
-import {cardType, itemType} from './cardType';
+import {itemType} from './cardType';
 
 export  class Staff extends Item{
     itemType: itemType.staf;

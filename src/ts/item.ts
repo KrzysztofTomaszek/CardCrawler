@@ -24,7 +24,4 @@ export abstract class Item extends Card {
     {
         return true;
     }
-
-
-
 }

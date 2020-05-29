@@ -1,11 +1,13 @@
 import {Card} from './card';
 import {cardType, trapType} from './cardType';
 import { Hero } from './hero';
+import { Board } from './board';
 
 export abstract class Trap extends Card {
     cardType: cardType = cardType.trap;
     abstract trapType: trapType;
     abstract active: boolean;
+    abstract ifActivable: boolean;
     abstract haveTimer: boolean;
     abstract timer: number; 
     readonly itemValue: number = null;
@@ -16,25 +18,24 @@ export abstract class Trap extends Card {
         super(cardPleaceId);
     }
 
-    OnHeroMoveOn(): void {
-        throw new Error("Method not implemented.");
-    }	
-    
-    abstract DealDamage(): void;
+    abstract OnHeroMoveOn(hero : Hero): void;
+    abstract ChangeActive(): void;
 
-    SetActive(): void
-    {
-        throw new Error("Method not implemented.");
-    }
+    abstract SetTimer(): void;
 
-    SetTimer(): void
-    {
-        throw new Error("Method not implemented.");
-    }
+    abstract OnEndtimer(): void;
 
-    OnEndtimer(): void
+    static ChangeAllActivableTrapStatus() : void
     {
-        throw new Error("Method not implemented.");
+        Board.cards.forEach(card => {			
+            if(card.cardType == cardType.trap)
+            {
+                if((card as Trap).ifActivable)
+                {
+                    (card as Trap).ChangeActive();
+                }            
+            }
+		});
     }
 
     IfHeroMoveOnContact(hero : Hero) : boolean 
